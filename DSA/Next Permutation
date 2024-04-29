@@ -1,0 +1,27 @@
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int length = nums.size();
+        int indx = -1;
+        for(int i=length-1;i>0;i--) {
+            if(nums[i]>nums[i-1]) { 
+                indx = i-1;
+                break;
+            }
+        }
+        if(indx!=-1) {
+            for(int i=length-1;i>0;i--) {
+                if(nums[i] > nums[indx]) {
+                    int t = nums[i];
+                    nums[i] = nums[indx];
+                    nums[indx] = t;
+                    break;
+                }
+            }
+            reverse(nums.begin()+indx+1,nums.end());
+        }
+        else {
+            reverse(nums.begin(),nums.end());
+        }
+    }
+};
