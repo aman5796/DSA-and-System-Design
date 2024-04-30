@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int cheapestPrice = prices[0];
+        int bestDeal = 0;
+        for(auto price: prices) {
+            if(price>cheapestPrice) {
+                bestDeal = max(price-cheapestPrice,bestDeal);
+            }
+            else if(price<cheapestPrice) {
+                cheapestPrice = price;
+            }
+        }
+        return bestDeal;
+    }
+};
