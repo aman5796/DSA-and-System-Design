@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        for(auto num: nums) {
+            int indx = abs(num);
+            if(nums[indx]<0){
+                return indx;
+            }
+            nums[indx] = -nums[indx];
+        }
+        return -1;
+    }
+};
