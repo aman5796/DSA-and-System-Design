@@ -1,0 +1,31 @@
+Node* mergeBottom(Node* ptr1, Node* ptr2) {
+    Node* res = new Node(0);
+    Node* resHead = res;
+    while(ptr1!=NULL && ptr2!=NULL) {
+        if(ptr1->data < ptr2->data) {
+            res->bottom = ptr1;
+            ptr1 = ptr1->bottom;
+            res = res->bottom;
+        }
+        else {
+            res->bottom = ptr2;
+            ptr2 = ptr2->bottom;
+            res = res->bottom;
+        }
+    }
+    if(ptr1) {
+        res->bottom = ptr1;
+    }
+    else {
+        res->bottom = ptr2;
+    }
+    return resHead->bottom;
+}
+
+Node *flatten(Node *root)
+{
+   if(root==NULL || root->next==NULL) return root;
+   root->next = flatten(root->next);
+   root = mergeBottom(root,root->next);
+   return root;
+}
