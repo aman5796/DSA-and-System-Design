@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n = height.size();
+        vector<int> greaterRight(n,0);
+        vector<int> greaterLeft(n,0);
+        greaterLeft[0] = height[0];
+        greaterRight[n-1] = height[n-1];
+        int ans = 0;
+        for(int i=1;i<n;i++) {
+            greaterLeft[i] = max(greaterLeft[i-1],height[i]);
+        }
+        for(int i=n-2;i>=0;i--) {
+            greaterRight[i] = max(greaterRight[i+1],height[i]);
+        }
+        for(int i=0;i<n;i++) {
+            ans += min(greaterLeft[i],greaterRight[i])-height[i];
+        }
+        return ans;
+    }
+};
