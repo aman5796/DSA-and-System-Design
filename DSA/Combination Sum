@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& arr, int target) {
+        vector<vector<int>> res;
+        int n = arr.size();
+        vector<int> cmbn;
+        getCombination(arr,0,n,target,res,cmbn);
+        return res;
+    }
+
+    void getCombination(vector<int>& arr, int i, int n, int m, vector<vector<int>>& res,vector<int>& cmbn) {
+        if(i==n) {
+            if(m==0) {
+                res.push_back(cmbn);
+            }
+            return;
+        }
+        if(arr[i]<=m) {
+            cmbn.push_back(arr[i]);
+            getCombination(arr,i,n,m-arr[i],res,cmbn);
+            cmbn.pop_back();
+        }
+        getCombination(arr,i+1,n,m,res,cmbn);
+    }
+};
