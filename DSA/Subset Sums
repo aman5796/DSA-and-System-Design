@@ -1,0 +1,26 @@
+class Solution {
+  public:
+    vector<int> subsetSums(vector<int> arr, int n) {
+        // Write Your Code here
+        vector<int> res;
+        res.push_back(0);
+        getSubsetSums(arr,0,n,res,0);
+        for(int num: arr) {
+            if(num==0) {
+                res.push_back(0);
+            }
+        }
+        return res;
+    }
+    
+    void getSubsetSums(vector<int> &arr, int i, int n,vector<int> &res, int sum) {
+        if(i==n) {
+            if(sum!=0) {
+                res.push_back(sum);
+            }
+            return;
+        }
+        getSubsetSums(arr,i+1,n,res,sum);
+        getSubsetSums(arr,i+1,n,res,sum+arr[i]);
+    }
+};
