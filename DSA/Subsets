@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> res;
+        res.push_back({});
+        int n = nums.size();
+        vector<int> cur;
+        makeSubset(nums,res,0,n,cur);
+        return res;
+    }
+
+    void makeSubset(vector<int>& nums, vector<vector<int>>& res, int i, int n, vector<int> &cur) {
+        if(i==n) {
+            if(cur.size()>0) {
+                res.push_back(cur);
+            }
+            return;
+        }
+        makeSubset(nums,res,i+1,n,cur);
+        cur.push_back(nums[i]);
+        makeSubset(nums,res,i+1,n,cur);
+        cur.pop_back();
+    }
+};
