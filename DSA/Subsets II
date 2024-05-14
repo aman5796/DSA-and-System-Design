@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> res;
+        set<vector<int>> uSet;
+        sort(nums.begin(),nums.end());
+        int n = nums.size();
+        vector<int> cur;
+        makeSubset(nums,uSet,0,n,cur);
+        res.push_back({});
+        for(auto st: uSet) {
+            res.push_back(st);
+        }
+        return res;
+    }
+
+    void makeSubset(vector<int>& nums, set<vector<int>>& uSet, int i, int n, vector<int> &cur) {
+        if(i==n) {
+            if(cur.size()>0) {
+                uSet.insert(cur);
+            }
+            return;
+        }
+        makeSubset(nums,uSet,i+1,n,cur);
+        cur.push_back(nums[i]);
+        makeSubset(nums,uSet,i+1,n,cur);
+        cur.pop_back();
+    }
+};
