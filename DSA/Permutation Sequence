@@ -1,0 +1,24 @@
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        int factorial = 1;
+        vector<int> num;
+        for(int i=1;i<n;i++) {
+            factorial *= i;
+            num.push_back(i);
+        }
+        num.push_back(n);
+        string res = "";
+        k--;
+        while(true) {
+            res += to_string(num[k/factorial]);
+            num.erase(num.begin()+k/factorial);
+            if(!num.size()) {
+                break;
+            }
+            k = k%factorial;
+            factorial = factorial/num.size();
+        }
+        return res;
+    }
+};
