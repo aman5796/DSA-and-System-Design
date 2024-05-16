@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        unordered_map<int,bool> used;
+        vector<vector<int>> res;
+        for(int num: nums) {
+            used[num] = false;
+        }
+        vector<int> cmbn;
+        int n = nums.size();
+        createPerms(nums,n,used,cmbn,res);
+        return res;
+    }
+
+    void createPerms(vector<int> &nums, int n, unordered_map<int,bool> &used,vector<int> &cmbn, vector<vector<int>> &res) {
+        if(cmbn.size()==n) {
+            res.push_back(cmbn);
+            return;
+        }
+        for(int num: nums) {
+            if(!used[num]) {
+                used[num] = true;
+                cmbn.push_back(num);
+                createPerms(nums,n,used,cmbn,res);
+                cmbn.pop_back();
+                used[num] = false;
+            }
+        }
+    }
+};
