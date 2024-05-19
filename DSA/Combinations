@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<vector<int>> combine(int n, int k) {
+        vector<int> arr;
+        for(int i=1;i<=n;i++) {
+            arr.push_back(i);
+        }
+        vector<vector<int>> res;
+        vector<int> cmbn;
+        makeCmbn(arr,0,n,k,cmbn,res);
+        return res;
+    }
+
+    void makeCmbn(vector<int> &arr, int i, int n, int k, vector<int> &cmbn, vector<vector<int>> &res) {
+        if(cmbn.size()==k) {
+            res.push_back(cmbn);
+            return;
+        }
+        if(i<n) {
+            makeCmbn(arr,i+1,n,k,cmbn,res);
+            cmbn.push_back(arr[i]);
+            makeCmbn(arr,i+1,n,k,cmbn,res);
+            cmbn.pop_back();
+        }
+        else {
+            return;
+        }
+    }
+};
