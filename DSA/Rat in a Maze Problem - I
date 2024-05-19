@@ -1,0 +1,29 @@
+class Solution{
+    public:
+    vector<string> findPath(vector<vector<int>> &m, int n) {
+        // Your code goes here
+        vector<string> res;
+        vector<vector<int>> vis(n,vector<int>(n,0));
+        getPath(m,n,0,0,res,"",vis);
+        return res;
+    }
+    
+    void getPath(vector<vector<int>> &arr, int n, int row, int col, vector<string> &res, string p, vector<vector<int>> &vis) {
+        if(row<0 || col<0 || row>=n || col>=n || arr[row][col]==0 || vis[row][col])
+          return;
+        if(row==n-1 && col==n-1){
+           res.push_back(p);
+           return;
+        }
+        vis[row][col]=1;
+        //Up
+        getPath(arr,n,row-1,col,res,p+'U',vis);
+        //Right
+        getPath(arr,n,row,col+1,res,p+'R',vis);
+        //Left
+        getPath(arr,n,row,col-1,res,p+'L',vis);
+        //Down
+        getPath(arr,n,row+1,col,res,p+'D',vis);
+        vis[row][col]=0;
+    }
+};
