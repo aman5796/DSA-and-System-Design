@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<vector<int>> dp(n,vector<int>(m,-1));
+        return totalPaths(grid,0,0,dp);
+    }
+
+    int totalPaths(vector<vector<int>> &grid, int row, int col,vector<vector<int>> &dp) {
+        if(row>=grid.size() || col>=grid[0].size()) {
+            return 0;
+        }
+        if(grid[row][col]==1) {
+            return 0;
+        }
+        if(row==grid.size()-1 && col==grid[0].size()-1) {
+            return 1;
+        }
+        if(dp[row][col]!=-1) {
+            return dp[row][col];
+        }
+        dp[row][col] = totalPaths(grid,row+1,col,dp) + totalPaths(grid,row,col+1,dp);
+        return dp[row][col];
+    }
+};
