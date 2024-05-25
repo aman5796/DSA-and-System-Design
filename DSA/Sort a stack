@@ -1,0 +1,28 @@
+void push(stack<int> &s, int top)
+{
+    stack<int> st;
+    while(!s.empty() && s.top()>top) {
+        st.push(s.top());
+        s.pop();
+    }
+    s.push(top);
+    while(!st.empty())
+    {
+        s.push(st.top());
+        st.pop();
+    }
+}
+
+void sorted(stack<int> &s)
+{
+    if(s.empty()) return;
+    int top = s.top();
+    s.pop();
+    sorted(s);
+    push(s,top);
+}
+
+void SortedStack :: sort()
+{
+   sorted(s);
+}
