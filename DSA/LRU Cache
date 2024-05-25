@@ -1,0 +1,76 @@
+class LRUCache {
+public:
+    class node {
+      public:
+        int key;
+      int val;
+      node * next;
+      node * prev;
+      node(int _key, int _val) {
+        key = _key;
+        val = _val;
+      }
+    };
+
+    node* head = new node(-1,-1);
+    node* tail = new node(-1,-1);
+
+    int cap;
+    unordered_map<int,node*> hashMap;
+
+    void addNode(node* newNode) {
+        node* temp = head->next;
+        head->next = newNode;
+        newNode->next = temp;
+        temp->prev = newNode;
+        newNode->prev = head;
+    }
+
+    void deleteNode(node* delNode) {
+        delNode->next->prev = delNode->prev;
+        delNode->prev->next = delNode->next;
+    }
+
+    LRUCache(int capacity) {
+        cap = capacity;
+        head->next = tail;
+        head->prev = NULL;
+        tail->next = NULL;
+        tail->prev = head;
+    }
+    
+    int get(int key) {
+        if(hashMap.find(key)!=hashMap.end()) {
+            int ans = hashMap[key]->val;
+            node* del = hashMap[key];
+            deleteNode(del);
+            addNode(del);
+            hashMap.erase(key);
+            hashMap[key] = head->next;
+            return ans;
+        }
+        return -1;
+    }
+    
+    void put(int key, int val) {
+        if(hashMap.find(key)!=hashMap.end()) {
+            node* del = hashMap[key];
+            deleteNode(del);
+            hashMap.erase(key);
+        }
+        if(hashMap.size()==cap) {
+            node* del = tail->prev;
+            deleteNode(del);
+            hashMap.erase(del->key);
+        }
+        addNode(new node(key,val));
+        hashMap[key] = head->next;
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
