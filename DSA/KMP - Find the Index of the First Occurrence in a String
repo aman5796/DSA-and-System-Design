@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int strStr(string main, string sub) {
+        vector<int> lps(sub.size(),0);
+        int i=1;
+        int longestPreLen = 0;
+        while(i<sub.size()) {
+            if(sub[longestPreLen]==sub[i]) {
+                lps[i++] = ++longestPreLen;
+            }
+            else {
+                if(longestPreLen!=0) {
+                    longestPreLen = lps[longestPreLen-1];
+                }
+                else {
+                    lps[i++] = 0;
+                }
+            }
+        }
+        i = 0;
+        int j = 0;
+        int m = sub.length();
+        int n = main.length();
+        while ((n-i)>=(m-j)) {
+            if (sub[j] == main[i]) {
+                j++;
+                i++;
+            }
+            if (j == m) {
+                return i-j;
+            }
+            else if (i < n && sub[j] != main[i]) {
+                if (j != 0)
+                    j = lps[j - 1];
+                else
+                    i = i + 1;
+            }
+        }
+        return -1;
+    }
+};
