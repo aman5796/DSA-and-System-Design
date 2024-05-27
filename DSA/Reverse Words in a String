@@ -1,0 +1,18 @@
+class Solution {
+public:
+    string reverseWords(string s) {
+        stringstream ss(s);
+        string token;
+        vector<string> tokens;
+        while(getline(ss,token,' ')) {
+            tokens.push_back(token);
+        }
+        string res = "";
+        for(int i=tokens.size()-1;i>=0;i--) {
+            if(tokens[i]!="") {
+                res += (res=="")?tokens[i]:(" "+tokens[i]);
+            }
+        }
+        return res;
+    }
+};
