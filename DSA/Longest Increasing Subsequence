@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> dp(n,vector<int>(n,-1));
+        return LIS(nums,0,-1,dp);
+    }
+
+    int LIS(vector<int> &nums, int indx, int prevIndx, vector<vector<int>> &dp){
+        if(indx==nums.size()) {
+            return 0;
+        }
+        if(dp[prevIndx+1][indx]!=-1) return dp[prevIndx+1][indx];
+        int include = INT_MIN;
+        if(prevIndx==-1 || nums[indx]>nums[prevIndx]) {
+            include = 1+LIS(nums,indx+1,indx,dp);
+        }
+        int exclude = LIS(nums,indx+1,prevIndx,dp);
+        return dp[prevIndx+1][indx] = max(include,exclude);
+    }
+};
+
+/////////////////////////TABULARIZE SOLUTION//////////////////////////////////
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+        for(int i=n-1;i>=0;i--) {
+            for(int j=i-1;j>=-1;j--) {
+                int len = 0 + dp[i+1][j+1];
+                if(j==-1 || nums[i]>nums[j]) {
+                    len = max(len,1+dp[i+1][i+1]);
+                }
+                dp[i][j+1] = len;
+            }
+        }
+        return dp[0][-1+1];
+    }
+};
