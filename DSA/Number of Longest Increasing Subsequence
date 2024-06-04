@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int findNumberOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n,1);
+        vector<int> paths(n,1);
+        int maxLIS = INT_MIN;
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<i;j++) {
+                if(nums[j]<nums[i]) {
+                    if(dp[i]==1+dp[j]) {
+                        paths[i] += paths[j];
+                    }
+                    else if(dp[i]<1+dp[j]){
+                        paths[i] = paths[j];
+                        dp[i] = 1+dp[j];
+                    }
+                }
+            }
+            maxLIS = max(maxLIS,dp[i]);
+        }
+        int ans = 0;
+        for(int i=0;i<n;i++) {
+            if(dp[i]==maxLIS) {
+                ans += paths[i];
+            }
+        }
+        return ans;
+    }
+};
