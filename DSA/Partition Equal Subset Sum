@@ -1,0 +1,49 @@
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int totalSum = 0;
+        int n = nums.size();
+        for(int num: nums) {
+            totalSum += num;
+        }
+        if(totalSum%2!=0) return false;
+        int sum = totalSum/2;
+        vector<vector<bool>> dp(nums.size(),vector<bool>(sum+1,false));
+        for(int i=0;i<n;i++) {
+            dp[i][0] = true;
+        }
+        if(nums[0]<=sum) {
+            dp[0][nums[0]] = true;
+        }
+        for(int i=1;i<n;i++) {
+            for(int j=1;j<=sum;j++) {
+                bool exclude = dp[i-1][j];
+                bool include = false;
+                if(j-nums[i]>=0) {
+                    include = dp[i-1][j-nums[i]];
+                }
+                dp[i][j] = (include || exclude);
+            }
+        }
+        return dp[n-1][sum];
+        // return subsetSum(nums,0,totalSum/2,dp);
+    }
+
+    bool subsetSum(vector<int> &nums, int indx, int sum, vector<vector<bool>> &dp) {
+        if(sum==0) {
+            return true;
+        }
+        if(indx>=nums.size()) {
+            return false;
+        }
+        if(sum<0) return false;
+        if(dp[indx][sum]) return true;
+        int include = subsetSum(nums,indx+1,sum-nums[indx],dp);
+        int exclude = subsetSum(nums,indx+1,sum,dp);
+        return dp[indx][sum] = (include || exclude);
+    }
+};
+
+
+
+///////////////////// SPACE OPTIMIZED////////////////////////
