@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int change(int amount, vector<int>& coins) {
+        vector<vector<int>> dp(coins.size(),vector<int>(amount+1,-1));
+        return numWays(coins,coins.size()-1,amount,dp);
+    }
+
+    int numWays(vector<int> &coins, int indx, int sum, vector<vector<int>> &dp)
+    {
+        if(sum==0) {
+            return 1;
+        }
+        if(indx<0) {
+            return 0;
+        }
+        if(dp[indx][sum]!=-1) return dp[indx][sum];
+        int diff = numWays(coins,indx-1,sum,dp);
+        int same = 0;
+        if(sum-coins[indx]>=0) {
+            same = numWays(coins,indx,sum-coins[indx],dp);
+        }
+        dp[indx][sum] = diff + same;
+        return dp[indx][sum];
+    }
+};
