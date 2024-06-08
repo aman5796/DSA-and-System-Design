@@ -1,0 +1,60 @@
+class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        int n1 = text1.length();
+        int n2 = text2.length();
+        vector<vector<int>> dp(n1,vector<int>(n2,-1));
+        return LCS(text1,text2,n1-1,n2-1,dp);
+    }
+
+    int LCS(string s1, string s2, int i1, int i2, vector<vector<int>> &dp) {
+        if(i1<0 || i2<0) {
+            return 0;
+        }
+        if(dp[i1][i2]!=-1) return dp[i1][i2];
+        int same = 0;
+        int diff = 0;
+        if(s1[i1]==s2[i2]) {
+            same = 1+LCS(s1,s2,i1-1,i2-1,dp);
+        }
+        else {
+            int keep1 = LCS(s1,s2,i1,i2-1,dp);
+            int keep2 = LCS(s1,s2,i1-1,i2,dp);
+            diff = max(keep1,keep2);
+        }
+        dp[i1][i2] = max(same,diff);
+        return dp[i1][i2];
+    }
+};
+
+//////////////////////////////////////TABULATION/////////////////////////////////////////
+
+class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        int n1 = text1.length();
+        int n2 = text2.length();
+        vector<vector<int>> dp(n1+1,vector<int>(n2+1,0));
+        for(int i1=0;i1<=n1;i1++) {
+            dp[i1][0] = 0;
+        }
+        for(int i2=0;i2<=n2;i2++) {
+            dp[0][i2] = 0;
+        }
+        for(int i1=1;i1<=n1;i1++) {
+            for(int i2=1;i2<=n2;i2++) {
+                int same = 0;
+                int diff = 0;
+                if(text1[i1-1]==text2[i2-1]) {
+                    same = 1+dp[i1-1][i2-1];
+                }
+                else {
+                    int keep1 = dp[i1][i2-1];
+                    int keep2 = dp[i1-1][i2];
+                    diff = max(keep1,keep2);
+                }
+                dp[i1][i2] = max(same,diff);
+            }
+        }
+        return dp[n1][n2];
+    }
