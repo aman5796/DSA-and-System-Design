@@ -1,0 +1,42 @@
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& pre) {
+        unordered_map<int,vector<int>> graph;
+        vector<int> vis(numCourses,0);
+        for(int i=0;i<pre.size();i++) {
+            if(graph.find(pre[i][1])==graph.end()) {
+                graph[pre[i][1]] = {pre[i][0]};
+            }
+            else {
+                graph[pre[i][1]].push_back(pre[i][0]);
+            }
+        }
+        for(int i=0;i<numCourses;i++) {
+            if(graph.find(i)==graph.end()) {
+                continue;
+            }
+            if(vis[i]==0) {
+                if(!dfs(graph,i,vis)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    bool dfs(unordered_map<int,vector<int>> &graph, int i, vector<int> &vis) {
+        vis[i] = 2;
+        for(int j=0;j<graph[i].size();j++) {
+            if(vis[graph[i][j]]==2) {
+                return false;
+            }
+            else if(vis[graph[i][j]]==0) {
+                if(!dfs(graph,graph[i][j],vis)) {
+                    return false;
+                }
+            }
+        }
+        vis[i] = 1;
+        return true;
+    }
+};
