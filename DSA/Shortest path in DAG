@@ -1,0 +1,32 @@
+class Solution {
+  public:
+     vector<int> shortestPath(int N,int M, vector<vector<int>>& edges){
+        vector<pair<int, int>> adj[N];
+        for(auto it:edges)
+        {
+            adj[it[0]].push_back({it[1], it[2]});
+        }
+        queue<pair<int, int>> q;
+        q.push({0, 0});
+        vector<int> dist(N, INT_MAX);
+        while(!q.empty())
+        {
+            int node = q.front().first;
+            int d = q.front().second;
+            q.pop();
+            dist[node] = min(dist[node], d);
+            for(auto it:adj[node])
+            {
+                if(d+it.second < dist[it.first])
+                {
+                    q.push({it.first, d+it.second});
+                }
+            }
+        }
+        for(int i=0; i<N; i++)
+        {
+            if(dist[i] == INT_MAX) dist[i] = -1;
+        }
+        return dist;
+    }
+};
