@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        int m = heights.size();
+        int n = heights[0].size();
+        vector<vector<int>> dis(m,vector<int>(n,INT_MAX));
+        queue<vector<int>> q;
+        q.push({0,0});
+        dis[0][0] = 0;
+        vector<vector<int>> dir = {{-1,0},{1,0},{0,-1},{0,1}};
+        while(!q.empty()) {
+            vector<int> v = q.front();
+            int i = v[0];
+            int j = v[1];
+            q.pop();
+            for(int k=0;k<4;k++) {
+                if(i+dir[k][0]>=0 && i+dir[k][0]<m && j+dir[k][1]>=0 && j+dir[k][1]<n) {
+                    int newI = i+dir[k][0];
+                    int newJ = j+dir[k][1];
+                    int htDiff = abs(heights[i][j]-heights[newI][newJ]);
+                    int effort = max(htDiff,dis[i][j]);
+                    if(dis[newI][newJ]>effort) {
+                        dis[newI][newJ] = effort;
+                        q.push({newI,newJ});
+                    }
+                    else {
+                        continue;
+                    }
+                }
+            }
+        }
+        return dis[m-1][n-1];
+    }
+};
