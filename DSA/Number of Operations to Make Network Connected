@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int makeConnected(int n, vector<vector<int>>& connections) {
+        int edges = connections.size();
+        if(edges<n-1){
+            return -1;
+        }
+        vector<int> parent(n,0);
+        vector<int> rank(n,0);
+        for(int i=0;i<n;i++) {
+            parent[i] = i;
+        }
+        for(auto it: connections) {
+            makeUnion(parent,rank,it[0],it[1]);
+        }
+        unordered_set<int> groups;
+        for(int i=0; i<n; i++){
+            int par = find(parent,i);
+            groups.insert(par);
+        }
+        int unions = groups.size();
+        return unions-1;
+    }
+
+    int find(vector<int> &parent, int node) {
+        if(node == parent[node]) {
+            return node;
+        }
+        return parent[node] = find(parent,parent[node]);
+    }
+
+    void makeUnion(vector<int> &parent, vector<int> &rank, int x, int y) {
+        int px = find(parent,x);
+        int py = find(parent,y);
+        if(px==py) {
+            return;
+        }
+        if(rank[px]<rank[py]) {
+            parent[px] = py;
+        }
+        else if(rank[py]>rank[py]) {
+            parent[py] = px;
+        }
+        else {
+            parent[py] = px;
+            rank[px]++;
+        }
+    }
+};
