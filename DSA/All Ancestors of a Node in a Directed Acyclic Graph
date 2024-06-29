@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
+        vector<vector<int>> res(n), adj(n);
+        for(auto it: edges) {
+            adj[it[0]].push_back(it[1]);
+        }
+        for(int i=0;i<n;i++) {
+            vector<int> vis(n,false);
+            dfs(i,i,adj,res,vis);
+        }
+        return res;
+    }
+
+    void dfs(int node, int parent, vector<vector<int>> &adj, vector<vector<int>> &res, vector<int> &vis) {
+        vis[node] = true;
+        for(auto it: adj[node]) {
+            if(!vis[it]) {
+                res[it].push_back(parent);
+                dfs(it,parent,adj,res,vis);
+            }
+        }
+    }
+};
